@@ -1,0 +1,4 @@
+SECCON{Congraturations! Also find other attack flags.}
+SECCON{This must be too easy for you.}
+SECCON{Don't forget to update your score with updated your team keyword.}
+SECCON{If you find all 4 flags in this tower, please challenge the other towers.}

@@ -1,0 +1,1 @@
+SECCON{If you find all 4 flags in this tower, please challenge the other towers.}

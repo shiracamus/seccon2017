@@ -1,0 +1,8 @@
+Brainhack
+http://10.0.21.89:8989/
+
+The system specification:
+    docker host: Ubuntu 16.04 TLS
+    docker container: nginx:1.13.8-alpine
+    docker container: php:7.2.1-fpm (read-only container and append only files)
+    docker-compose version 1.18.0, build 8dd22a9

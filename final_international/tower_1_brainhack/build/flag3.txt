@@ -1,0 +1,6 @@
+  Hello, World!
+
+
+Do you want the flag?
+Well...
+SECCON{Don't forget to update your score with updated your team keyword.}
