@@ -53,7 +53,7 @@ Submit[buton]
 ### How to build the server
 
 <p>
-It runs on docker using docker_compose supported compose file version 3.<br>
+It runs on docker using docker_compose supporting compose file version 3.<br>
 So, you need to prepare the environment.<br>
 After that, you can build and run it:<br>
 
