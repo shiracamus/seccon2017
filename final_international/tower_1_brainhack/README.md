@@ -33,15 +33,15 @@ NOTE: Whitespace characters at the end of the output are ignored.
 
 #### Submit Form
 
-<p><label>Your Team Keyword:
+<p><label>Your Team Keyword:<br>
 [textfield]
 </label></p>
 
-<p><label>Your Brainhack Code:
+<p><label>Your Brainhack Code:<br>
 [textarea]<br>
 </label></p>
 
-Submit[buton]
+Submit[button]
 
 #### Code Golf Ranking
 
