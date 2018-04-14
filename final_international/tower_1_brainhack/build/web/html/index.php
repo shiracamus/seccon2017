@@ -54,21 +54,29 @@ Your Brainhack Code:<br>
 
 <table border="1">
 <tr><th>Rank</th><th>Score</th><th align="left">Name</th></tr>
-<?
+<?php
+function read_score()
+{
+    if ($score = fopen('../log/score.txt', 'r')) {
+        while (!feof($score)) {
+            $line = fgets($score);
+            if (preg_match('/^[^\s]{1,8} [\w+\/]{1,128}={0,2}$/', $line))
+                yield $line;
+        }
+        fclose($score);
+    }
+}
+
+$lines = iterator_to_array(read_score());
+natsort($lines);
+
 $rank = 0;
 $last = '';
 $same = 0;
-exec('cat ../log/score.txt', $lines, $ret);
-$lines = array_unique($lines);
-natsort($lines);
-foreach (array_slice($lines, 0, 200) as $line) {
+foreach ($lines as $line) {
     list($score, $name) = explode(' ', $line, 2);
-    if (strlen($score) > 8) {
-	continue;
-    }
-    if (strlen(base64_decode($name)) == 0) {
-	continue;
-    }
+    $name = trim(base64_decode($name));
+    if (strlen($name) <= 0 || ! ctype_print($name)) continue;
     if ($score === $last) {
         $same++;
     } else {
@@ -84,7 +92,7 @@ foreach (array_slice($lines, 0, 200) as $line) {
     echo htmlspecialchars($score, ENT_QUOTES, 'UTF-8');
     echo '</td>';
     echo '<td align="left">';
-    echo htmlspecialchars(base64_decode($name), ENT_QUOTES, 'UTF-8');
+    echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
     echo '</td>';
     echo '</tr>'."\n";
 }

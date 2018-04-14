@@ -28,7 +28,7 @@ if (trim(shell_exec('egrep '.$arg_lookup.' ../../log/submit.log')) !== '') {
 </head>
 <body>
 <?php
-$hadoken = FALSE;
+$visualize = FALSE;
 if (isset($_POST['team']) && trim($_POST['team']) !== '') {
     $team = trim($_POST['team']);
 } else {
@@ -52,7 +52,7 @@ if (isset($_POST['code'])) {
     # judge the output
     $output = shell_exec('echo '.$arg_code.' | base64 -d | /usr/local/bin/brainhack');
     if (rtrim($output) === 'Hello, World!') {
-        $hadoken = TRUE;
+        $visualize = TRUE;
         # scoreing
         if ($team !== "\t") {
             shell_exec('echo '.$arg_size.' '.$arg_team.' >> ../../log/score.txt');
@@ -84,26 +84,34 @@ if (isset($_POST['code'])) {
 <table border="1">
 <tr><th>Rank</th><th>Score</th><th align="left">Name</th></tr>
 <?php
+function read_score()
+{
+    if ($score = fopen('../../log/score.txt', 'r')) {
+        while (!feof($score)) {
+            $line = fgets($score);
+            if (preg_match('/^[^\s]{1,8} [\w+\/]{1,128}={0,2}$/', $line))
+                yield $line;
+        }
+        fclose($score);
+    }
+}
+
+$lines = iterator_to_array(read_score());
+natsort($lines);
+
 $top = FALSE;
 $rank = 0;
 $last = '';
 $same = 0;
-exec('cat ../../log/score.txt', $lines, $ret);
-$lines = array_unique($lines);
-natsort($lines);
-foreach (array_slice($lines, 0, 200) as $line) {
-    if (! strstr($line, ' ')) {
-        continue;
-    }
+foreach ($lines as $line) {
     list($score, $name) = explode(' ', $line, 2);
-    $name = base64_decode(trim($name));
-    if (strlen($score) > 8) {
-        continue;
-    }
+    $name = trim(base64_decode($name));
+    if (strlen($name) <= 0 || ! ctype_print($name)) continue;
     if ($score === $last) {
         $same++;
     } else {
         $rank = $rank + $same + 1;
+        if ($rank === 1 && $score == $size) $top = TRUE;
         $same = 0;
         $last = $score;
     }
@@ -118,13 +126,10 @@ foreach (array_slice($lines, 0, 200) as $line) {
     echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
     echo '</td>';
     echo '</tr>'."\n";
-    if ($rank === 1 && $score == $size) {
-        $top = TRUE;
-    }
 }
-if ($hadoken) {
-    $cmd = $top ? 'success.sh' : 'fail.sh';
-    shell_exec('/usr/local/bin/'.$cmd.' '.$arg_remote);
+if ($visualize) {
+    $view = $top ? 'success.sh' : 'fail.sh';
+    shell_exec('/usr/local/bin/'.$view.' '.$arg_remote);
 }
 ?>
 </table>
