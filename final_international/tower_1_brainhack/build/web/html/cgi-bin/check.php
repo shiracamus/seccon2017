@@ -58,7 +58,7 @@ if (isset($_POST['code'])) {
             shell_exec('echo '.$arg_size.' '.$arg_team.' >> ../../log/score.txt');
         }
 
-        echo '<p><b>Conglaturations!</b></p>'."\n";
+        echo '<p><b>Congratulations!</b></p>'."\n";
         echo '<p>Your code size is ';
         echo htmlspecialchars($size, ENT_QUOTES, 'UTF-8');
         echo '.</p>'."\n";
