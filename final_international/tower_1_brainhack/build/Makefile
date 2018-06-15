@@ -7,7 +7,7 @@ WEBLOG=web/log
 SCORE=score.txt
 SUBMIT=submit.log
 
-CFLAGS=-Ofast
+CFLAGS=-Ofast -Wl,-z,lazy
 
 all: $(BRAINHACK) $(FLAGS)
 
