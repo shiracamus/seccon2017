@@ -52,6 +52,10 @@ $(WEBLOG)/$(SUBMIT):
 	chmod 666 $@
 	sudo chattr +a $@
 
+docker:
+	sudo apt install docker-compose
+	sudo usermod -aG docker $(USER)
+
 up: $(DOWNLOAD)/$(BRAINHACK) $(ATTACK4) $(WEBLOG)/$(SCORE) $(WEBLOG)/$(SUBMIT)
 	mkdir -p nginx/log
 	docker-compose up -d
